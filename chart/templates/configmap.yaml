@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "api.name" . }}
+  labels:
+    {{- include "api.commonLabels" . | nindent 4 }}
+data:
+  spring.profiles.active: {{ .Values.env | quote }}
+  env: {{ .Values.env | quote }}
+  rdb.host: {{ .Values.rdb.host | quote }}
+  rdb.port: {{ .Values.rdb.port | quote }}
+  rdb.database: {{ .Values.rdb.database | quote }}
+  azure.tenantid: {{ .Values.azure.tenantid | quote }}
+  azure.clientid: {{ .Values.azure.clientid | quote }}
+  mdbapi.tky: {{ .Values.mdbapi.tky | quote }}
+  dataset.ga.uqjp: {{ .Values.dataset.ga.uqjp | quote }}
+  dataset.ga.gujp: {{ .Values.dataset.ga.gujp | quote }}
+  dataset.ga.uqjp.app: {{ .Values.dataset.ga.uqjpApp | quote }}

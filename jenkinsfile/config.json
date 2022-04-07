@@ -1,0 +1,54 @@
+{
+    "env_config": {
+        "fr-prd-mpf": {
+            "environment": "production",
+            "environment_short": "prd",
+            "default_branch": "master",
+            "service_account" : "prd01-mpf-api@fr-prd-mpf.iam.gserviceaccount.com",
+            "asia-northeast1": {
+                "cluster_name" : "prd01-tky-api-mpf",
+                "application_namespace" : "prd01-tky-webap-nsp-mpf",
+                "external_secret_namespace" : "prd01-tky-external-secret-nsp-mpf",
+                "kube_state_metrics_namespace" : "prd01-tky-kube-state-metrics-nsp-mpf"
+            }
+        },
+        "fr-stg-mpf": {
+            "environment": "staging",
+            "environment_short": "stg",
+            "default_branch": "staging",
+            "service_account" : "stg01-mpf-api@fr-stg-mpf.iam.gserviceaccount.com",
+            "asia-northeast1": {
+                "cluster_name" : "stg01-tky-api-mpf",
+                "application_namespace" : "stg01-tky-webap-nsp-mpf",
+                "external_secret_namespace" : "stg01-tky-external-secret-nsp-mpf",
+                "kube_state_metrics_namespace" : "stg01-tky-kube-state-metrics-nsp-mpf"
+            }
+        },
+        "fr-dev-mpf": {
+            "environment": "development",
+            "environment_short": "dev",
+            "default_branch": "develop",
+            "service_account" : "dev01-mpf-api@fr-dev-mpf.iam.gserviceaccount.com",
+            "asia-northeast1": {
+                "cluster_name" : "dev01-tky-api-mpf",
+                "application_namespace" : "dev01-tky-webap-nsp-mpf",
+                "external_secret_namespace" : "dev01-tky-external-secret-nsp-mpf",
+                "kube_state_metrics_namespace" : "dev01-tky-kube-state-metrics-nsp-mpf"
+            }
+        }
+    },
+    "app_config": {
+        "backend-webap": {
+            "git_url": "git@github.com:fastretailing/fr-cdu-mpf-backend",
+            "git_credential": "fr-gdmk-automaton", 
+            "build_home": "/",
+            "chart_path": "/chart"
+        }
+    },
+    "region_config": {
+        "asia-northeast1": {
+            "region_short": "tky",
+            "gcr_location": "asia.gcr.io"
+        }
+    }
+}

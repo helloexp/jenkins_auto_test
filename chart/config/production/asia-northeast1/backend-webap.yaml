@@ -1,0 +1,35 @@
+env: prd
+
+region: tky
+
+domain: fastretailing.com
+
+replicaCount: 3
+
+image: 
+  repository: asia.gcr.io/fr-prd-mpf/backend_webap
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+rdb:
+  host: rdb.mkpf.fastretailing.com
+  port: 5432
+  database: fr_mkpf
+
+port:
+  container: 8080
+  service: 8080
+  target: 8080
+
+azure:
+  tenantid: 9026775c-bc24-4a4e-b109-baee1f2b0f50
+  clientid: c46d8ba4-f115-49b0-a20d-ef26e9c353a1
+
+mdbapi: 
+  tky: api-tky.mkdb.fastretailing.com
+
+dataset:
+  ga:
+    uqjp: "80508446"
+    gujp: "75672114"
+    uqjpApp: "77805412"

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fastretailing.marketingpf.domain.mappers.AdsPlatformMasterMapper">
+    <resultMap id="adsPlatformMasterResultMap" type="com.fastretailing.marketingpf.domain.entities.AdsPlatformMaster">
+        <id column="ads_pltfrm_seq" property="adsPlatformSequence" />
+        <result column="otpt_pltfrm_seq" property="outputPlatformSequence" />
+        <result column="ads_pltfrm_name" property="adsPlatformName" />
+        <result column="api_tkn" property="apiToken" />
+        <result column="ext_trgt_id_list" property="extractionTargetIdList" />
+
+        <result column="del_flg_f_adt" property="deletionFlagForAudit" />
+        <result column="create_date_time_f_adt" property="createDateTimeForAudit" />
+        <result column="create_user_id_f_adt" property="createUserIdForAudit" />
+        <result column="del_date_time_f_adt" property="deletionDateTimeForAudit" />
+        <result column="del_user_id_f_adt" property="deletionUserIdForAudit" />
+        <result column="update_date_time_f_adt" property="updateDateTimeForAudit" />
+        <result column="update_user_id_f_adt" property="updateUserIdForAudit" />
+    </resultMap>
+
+    <select id="findById" resultMap="adsPlatformMasterResultMap">
+        SELECT *
+        FROM m_ads_pltfrm
+        WHERE ads_pltfrm_seq = #{adsPlatformSequence} AND del_flg_f_adt = 'f'
+    </select>
+</mapper>

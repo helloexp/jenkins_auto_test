@@ -1,0 +1,15 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "api.ingress.name" . }}
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "gke-api-xlb-static-ip"
+    networking.gke.io/managed-certificates: {{ include "api.certificate.name" . }}
+    kubernetes.io/ingress.allow-http: "false"
+spec:
+  defaultBackend:
+    service:
+      name: {{ include "api.service.name" . }}
+      port:
+        number: {{ .Values.port.target }}
+

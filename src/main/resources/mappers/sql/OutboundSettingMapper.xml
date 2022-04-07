@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fastretailing.marketingpf.domain.mappers.OutboundSettingMapper">
+    <resultMap id="outboundSettingResultMap" type="com.fastretailing.marketingpf.domain.entities.OutboundSetting">
+        <id column="outbound_stng_seq" property="outboundSettingSequence" />
+        <result column="biz_type" property="businessType" />
+        <result column="brnd_id" property="brandId" />
+        <result column="cntry_id" property="countryId" />
+        <result column="sbmsn_tmg_type" property="submissionTimingType" />
+        <result column="rsrv_sbmsn_dtime" property="reserveSubmissionDateTime" />
+        <result column="rglrly_sbmsn_frqncy_dtime_basis" property="regularlySubmissionFrequencyDateTimeBasis" />
+        <result column="rglrly_sbmsn_frqncy_perd_num_val" property="regularlySubmissionFrequencyPeriodNumberValue" />
+        <result column="rglrly_sbmsn_frqncy_perd_unit" property="regularlySubmissionFrequencyPeriodUnit" />
+        <result column="sbmsn_cmpl_cntct" property="submissionCompletionContact" />
+        <result column="outbound_stng_name" property="outboundSettingName" />
+        <result column="del_flg_f_adt" property="deletionFlagForAudit" />
+        <result column="create_date_time_f_adt" property="createDateTimeForAudit" />
+        <result column="create_user_id_f_adt" property="createUserIdForAudit" />
+        <result column="del_date_time_f_adt" property="deletionDateTimeForAudit" />
+        <result column="del_user_id_f_adt" property="deletionUserIdForAudit" />
+        <result column="update_date_time_f_adt" property="updateDateTimeForAudit" />
+        <result column="update_user_id_f_adt" property="updateUserIdForAudit" />
+    </resultMap>
+
+    <select id="findById" resultMap="outboundSettingResultMap">
+        SELECT *
+        FROM t_outbound_stng
+        WHERE outbound_stng_seq = #{outboundSettingSequence} AND del_flg_f_adt = 'f'
+    </select>
+
+    <select id="findAll" resultMap="outboundSettingResultMap">
+        SELECT *
+        FROM t_outbound_stng
+        WHERE del_flg_f_adt = 'f'
+        ORDER BY outbound_stng_seq ASC
+    </select>
+
+    <insert id="create" parameterType="com.fastretailing.marketingpf.domain.entities.OutboundSetting" useGeneratedKeys="true" keyProperty="outboundSettingSequence">
+        INSERT INTO t_outbound_stng
+        (biz_type, brnd_id, cntry_id, sbmsn_tmg_type, rsrv_sbmsn_dtime, rglrly_sbmsn_frqncy_dtime_basis, rglrly_sbmsn_frqncy_perd_num_val, rglrly_sbmsn_frqncy_perd_unit,
+        sbmsn_cmpl_cntct, outbound_stng_name, del_flg_f_adt, create_date_time_f_adt, create_user_id_f_adt, update_date_time_f_adt, update_user_id_f_adt)
+        VALUES (
+        #{businessType},
+        #{brandId},
+        #{countryId},
+        #{submissionTimingType},
+        #{reserveSubmissionDateTime},
+        #{regularlySubmissionFrequencyDateTimeBasis},
+        #{regularlySubmissionFrequencyPeriodNumberValue},
+        #{regularlySubmissionFrequencyPeriodUnit},
+        #{submissionCompletionContact}::json,
+        #{outboundSettingName},
+        'f',
+        #{createDateTimeForAudit},
+        #{createUserIdForAudit},
+        #{updateDateTimeForAudit},
+        #{updateUserIdForAudit}
+        )
+    </insert>
+</mapper>

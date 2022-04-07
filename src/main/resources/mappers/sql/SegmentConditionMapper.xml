@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fastretailing.marketingpf.domain.mappers.SegmentConditionMapper">
+    <resultMap id="segmentConditionResultMap" type="com.fastretailing.marketingpf.domain.entities.SegmentCondition">
+        <id column="sgmt_cond_seq" property="segmentConditionSequence"/>
+        <result column="sgmt_seq" property="segmentSequence"/>
+        <result column="sgmt_itm_f_scrn_seq" property="segmentItemForScreenSequence"/>
+        <result column="sgmt_itm_f_sql_seq" property="segmentItemForSqlSequence"/>
+        <result column="oprtr_type" property="operatorType"/>
+        <result column="cmprsn_val" property="comparisonValue"/>
+        <result column="sgmt_cond_blok_ordr" property="segmentConditionBlockOrder"/>
+        <result column="lgcl_oprtr_type" property="logicalOperatorType"/>
+        <result column="del_flg_f_adt" property="deletionFlagForAudit"/>
+        <result column="create_date_time_f_adt" property="createDateTimeForAudit"/>
+        <result column="create_user_id_f_adt" property="createUserIdForAudit"/>
+        <result column="del_date_time_f_adt" property="deletionDateTimeForAudit"/>
+        <result column="del_user_id_f_adt" property="deletionUserIdForAudit"/>
+        <result column="update_date_time_f_adt" property="updateDateTimeForAudit"/>
+        <result column="update_user_id_f_adt" property="updateUserIdForAudit"/>
+        <!--One-to-One-->
+        <association property="segmentItemForSqlMaster" javaType="com.fastretailing.marketingpf.domain.entities.SegmentItemForSqlMaster" >
+            <id column="t2_sgmt_itm_f_sql_seq" property="segmentItemForSqlSequence"/>
+            <result column="t2_sgmt_itm_f_scrn_seq" property="segmentItemForScreenSequence"/>
+            <result column="t2_brnd_id" property="brandId"/>
+            <result column="t2_cntry_id" property="countryId"/>
+            <result column="t2_evt_type" property="eventType"/>
+            <result column="t2_sgmt_itm_name" property="segmentItemName"/>
+            <result column="t2_qry_f_sgmt" property="queryForSegment"/>
+            <result column="t2_del_flg_f_adt" property="deletionFlagForAudit"/>
+            <result column="t2_create_date_time_f_adt" property="createDateTimeForAudit"/>
+            <result column="t2_create_user_id_f_adt" property="createUserIdForAudit"/>
+            <result column="t2_del_date_time_f_adt" property="deletionDateTimeForAudit"/>
+            <result column="t2_del_user_id_f_adt" property="deletionUserIdForAudit"/>
+            <result column="t2_update_date_time_f_adt" property="updateDateTimeForAudit"/>
+            <result column="t2_update_user_id_f_adt" property="updateUserIdForAudit"/>
+        </association>
+        <!--One-to-One-->
+        <association property="segmentItemForScreenMaster" javaType="com.fastretailing.marketingpf.domain.entities.SegmentItemForScreenMaster" >
+            <id column="t3_sgmt_itm_f_scrn_seq" property="segmentItemForScreenSequence"/>
+            <result column="t3_ctgry" property="category"/>
+            <result column="t3_dtl_ctgry" property="detailCategory"/>
+            <result column="t3_sgmt_itm_name" property="segmentItemName"/>
+            <result column="t3_inpt_type" property="inputType"/>
+            <result column="t3_oprtr_list" property="operatorList"/>
+            <result column="t3_chc_list" property="choicesList"/>
+            <result column="t3_url_f_api_aces" property="urlForApiAccess"/>
+            <result column="t3_del_flg_f_adt" property="deletionFlagForAudit"/>
+            <result column="t3_create_date_time_f_adt" property="createDateTimeForAudit"/>
+            <result column="t3_create_user_id_f_adt" property="createUserIdForAudit"/>
+            <result column="t3_del_date_time_f_adt" property="deletionDateTimeForAudit"/>
+            <result column="t3_del_user_id_f_adt" property="deletionUserIdForAudit"/>
+            <result column="t3_update_date_time_f_adt" property="updateDateTimeForAudit"/>
+            <result column="t3_update_user_id_f_adt" property="updateUserIdForAudit"/>
+        </association>
+    </resultMap>
+
+    <select id="findListBySegmentSequence" resultMap="segmentConditionResultMap">
+        SELECT
+        t1.sgmt_cond_seq,
+        t1.sgmt_seq,
+        t1.sgmt_itm_f_scrn_seq,
+        t1.sgmt_itm_f_sql_seq,
+        t1.oprtr_type,
+        t1.cmprsn_val,
+        t1.sgmt_cond_blok_ordr,
+        t1.lgcl_oprtr_type,
+        t1.del_flg_f_adt,
+        t1.create_date_time_f_adt,
+        t1.create_user_id_f_adt,
+        t1.del_date_time_f_adt,
+        t1.del_user_id_f_adt,
+        t1.update_date_time_f_adt,
+        t1.update_user_id_f_adt,
+        t2.sgmt_itm_f_sql_seq as t2_sgmt_itm_f_sql_seq,
+        t2.sgmt_itm_f_scrn_seq as t2_sgmt_itm_f_scrn_seq,
+        t2.brnd_id as t2_brnd_id,
+        t2.cntry_id as t2_cntry_id,
+        t2.evt_type as t2_evt_type,
+        t2.sgmt_itm_name as t2_sgmt_itm_name,
+        t2.qry_f_sgmt as t2_qry_f_sgmt,
+        t2.del_flg_f_adt as t2_del_flg_f_adt,
+        t2.create_date_time_f_adt as t2_create_date_time_f_adt,
+        t2.create_user_id_f_adt as t2_create_user_id_f_adt,
+        t2.del_date_time_f_adt as t2_del_date_time_f_adt,
+        t2.del_user_id_f_adt as t2_del_user_id_f_adt,
+        t2.update_date_time_f_adt as t2_update_date_time_f_adt,
+        t2.update_user_id_f_adt as t2_update_user_id_f_adt,
+        t3.sgmt_itm_f_scrn_seq as t3_sgmt_itm_f_scrn_seq,
+        t3.ctgry as t3_ctgry,
+        t3.dtl_ctgry as t3_dtl_ctgry,
+        t3.sgmt_itm_name as t3_sgmt_itm_name,
+        t3.inpt_type as t3_inpt_type,
+        t3.oprtr_list as t3_oprtr_list,
+        t3.chc_list as t3_chc_list,
+        t3.url_f_api_aces as t3_url_f_api_aces,
+        t3.del_flg_f_adt as t3_del_flg_f_adt,
+        t3.create_date_time_f_adt as t3_create_date_time_f_adt,
+        t3.create_user_id_f_adt as t3_create_user_id_f_adt,
+        t3.del_date_time_f_adt as t3_del_date_time_f_adt,
+        t3.del_user_id_f_adt as t3_del_user_id_f_adt,
+        t3.update_date_time_f_adt as t3_update_date_time_f_adt,
+        t3.update_user_id_f_adt as t3_update_user_id_f_adt
+        FROM
+        t_sgmt_cond t1
+        LEFT JOIN m_sgmt_itm_f_sql t2
+        ON
+        t1.sgmt_itm_f_sql_seq = t2.sgmt_itm_f_sql_seq
+        AND t2.del_flg_f_adt = 'f'
+        LEFT JOIN m_sgmt_itm_f_scrn t3
+        ON
+        t1.sgmt_itm_f_scrn_seq = t3.sgmt_itm_f_scrn_seq
+        AND t3.del_flg_f_adt = 'f'
+        WHERE
+        t1.sgmt_seq = #{segmentSequence}
+        AND t1.del_flg_f_adt = 'f'
+        ORDER BY
+        sgmt_cond_seq ASC;
+    </select>
+
+    <insert id="create" parameterType="com.fastretailing.marketingpf.domain.entities.SegmentCondition" useGeneratedKeys="true" keyProperty="segmentConditionSequence">
+        INSERT INTO t_sgmt_cond
+        (sgmt_seq, sgmt_itm_f_scrn_seq, sgmt_itm_f_sql_seq, oprtr_type, cmprsn_val, sgmt_cond_blok_ordr, lgcl_oprtr_type, del_flg_f_adt, create_date_time_f_adt, create_user_id_f_adt, update_date_time_f_adt, update_user_id_f_adt)
+        VALUES (
+        #{segmentSequence},
+        #{segmentItemForScreenSequence},
+        #{segmentItemForSqlSequence},
+        #{operatorType},
+        #{comparisonValue}::json,
+        #{segmentConditionBlockOrder},
+        #{logicalOperatorType},
+        'f',
+        #{createDateTimeForAudit},
+        #{createUserIdForAudit},
+        #{updateDateTimeForAudit},
+        #{updateUserIdForAudit}
+        )
+    </insert>
+
+    <select id="findById" resultMap="segmentConditionResultMap">
+        SELECT *
+        FROM t_sgmt_cond
+        WHERE sgmt_cond_seq = #{segmentConditionSequence} AND del_flg_f_adt = 'f'
+    </select>
+
+    <update id="delete" parameterType="com.fastretailing.marketingpf.domain.entities.SegmentCondition">
+        UPDATE t_sgmt_cond
+        SET
+        del_flg_f_adt = 't',
+        del_date_time_f_adt = #{deletionDateTimeForAudit},
+        del_user_id_f_adt = #{deletionUserIdForAudit}
+        WHERE
+        sgmt_cond_seq = #{segmentConditionSequence}
+    </update>
+</mapper>

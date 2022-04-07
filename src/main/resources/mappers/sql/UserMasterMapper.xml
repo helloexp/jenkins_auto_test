@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fastretailing.marketingpf.domain.mappers.UserMasterMapper">
+    <resultMap id="userMasterResultMap" type="com.fastretailing.marketingpf.domain.entities.UserMaster">
+        <id column="user_id" property="userId" />
+        <result column="user_full_nm" property="userFullName" />
+        <result column="role_seq_list" property="roleSequenceList" />
+        <result column="del_flg_f_adt" property="deletionFlagForAudit" />
+        <result column="create_date_time_f_adt" property="createDateTimeForAudit" />
+        <result column="create_user_id_f_adt" property="createUserIdForAudit" />
+        <result column="del_date_time_f_adt" property="deletionDateTimeForAudit" />
+        <result column="del_user_id_f_adt" property="deletionUserIdForAudit" />
+        <result column="update_date_time_f_adt" property="updateDateTimeForAudit" />
+        <result column="update_user_id_f_adt" property="updateUserIdForAudit" />
+    </resultMap>
+
+    <select id="findAll" resultMap="userMasterResultMap">
+        SELECT *
+        FROM m_user
+        WHERE del_flg_f_adt = 'f'
+        ORDER BY user_id ASC
+    </select>
+
+    <select id="findById" resultMap="userMasterResultMap">
+        SELECT *
+        FROM m_user
+        WHERE user_id = #{userId} AND del_flg_f_adt = 'f'
+    </select>
+
+    <insert id="create" parameterType="com.fastretailing.marketingpf.domain.entities.UserMaster" keyProperty="userId">
+        INSERT INTO m_user
+        (user_id, user_full_nm, role_seq_list, del_flg_f_adt, create_date_time_f_adt, create_user_id_f_adt, update_date_time_f_adt, update_user_id_f_adt)
+        VALUES (
+        #{userId},
+        #{userFullName},
+        #{roleSequenceList}::json,
+        'f',
+        #{createDateTimeForAudit},
+        #{createUserIdForAudit},
+        #{updateDateTimeForAudit},
+        #{updateUserIdForAudit}
+        )
+    </insert>
+
+     <update id="update" parameterType="com.fastretailing.marketingpf.domain.entities.UserMaster" keyProperty="userId">
+        UPDATE m_user
+        SET user_full_nm = #{userFullName},
+            role_seq_list = #{roleSequenceList}::json,
+            update_date_time_f_adt = #{updateDateTimeForAudit},
+            update_user_id_f_adt = #{updateUserIdForAudit}
+        WHERE user_id = #{userId} AND del_flg_f_adt = 'f'
+    </update>
+</mapper>

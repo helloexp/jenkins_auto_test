@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fastretailing.marketingpf.domain.mappers.ApiAuthenticationInformationMapper">
+    <resultMap id="ApiAuthenticationInformationResultMap" type="com.fastretailing.marketingpf.domain.entities.ApiAuthenticationInformation">
+        <id column="api_auth_info_seq" property="apiAuthenticationInformationSequence"/>
+        <result column="ads_pltfrm_seq" property="adsPlatformSequence"/>
+        <result column="api_tkn" property="apiToken"/>
+        <result column="ads_pltfrm_login_user_id" property="adsPfLoginUserId"/>
+        <result column="del_flg_f_adt" property="deletionFlagForAudit"/>
+        <result column="create_date_time_f_adt" property="createDateTimeForAudit"/>
+        <result column="create_user_id_f_adt" property="createUserIdForAudit"/>
+        <result column="del_date_time_f_adt" property="deletionDateTimeForAudit"/>
+        <result column="del_user_id_f_adt" property="deletionUserIdForAudit"/>
+        <result column="update_date_time_f_adt" property="updateDateTimeForAudit"/>
+        <result column="update_user_id_f_adt" property="updateUserIdForAudit"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="ApiAuthenticationInformationResultMap">
+        SELECT *
+        FROM t_api_auth_info
+        WHERE del_flg_f_adt = 'f'
+        ORDER BY api_auth_info_seq ASC
+    </select>
+
+    <insert id="upsert" parameterType="com.fastretailing.marketingpf.domain.entities.ApiAuthenticationInformation" useGeneratedKeys="true" keyProperty="apiAuthenticationInformationSequence">
+        INSERT INTO t_api_auth_info (
+            ads_pltfrm_seq,
+            api_tkn,
+            ads_pltfrm_login_user_id,
+            del_flg_f_adt,
+            create_date_time_f_adt,
+            create_user_id_f_adt,
+            update_date_time_f_adt,
+            update_user_id_f_adt
+        )
+        VALUES (
+            #{adsPlatformSequence},
+            #{apiToken}::json,
+            #{adsPfLoginUserId},
+            'f',
+            #{createDateTimeForAudit},
+            #{createUserIdForAudit},
+            #{updateDateTimeForAudit},
+            #{updateUserIdForAudit}
+        )
+        ON CONFLICT ON CONSTRAINT pf_unique_user_account
+        DO UPDATE SET
+            api_tkn = #{apiToken}::json,
+            del_flg_f_adt = 'f',
+            update_date_time_f_adt = #{updateDateTimeForAudit},
+            update_user_id_f_adt = #{updateUserIdForAudit}
+    </insert>
+
+    <select id="findByAdsPlatformSequenceAndLoginUserId" resultMap="ApiAuthenticationInformationResultMap">
+        SELECT *
+        FROM t_api_auth_info
+        WHERE
+        ads_pltfrm_seq = #{adsPlatformSequence} AND
+        ads_pltfrm_login_user_id = #{adsPfLoginUserId} AND
+        del_flg_f_adt = 'f'
+    </select>
+
+    <select id="findById" resultMap="ApiAuthenticationInformationResultMap">
+        SELECT *
+        FROM t_api_auth_info
+        WHERE
+        api_auth_info_seq = #{apiAuthenticationInformationSequence} AND
+        del_flg_f_adt = 'f'
+    </select>
+
+    <select id="findListByAdsPlatformSequence" resultMap="ApiAuthenticationInformationResultMap">
+        SELECT api_auth_info_seq
+             , ads_pltfrm_seq
+             , ads_pltfrm_login_user_id
+             , del_flg_f_adt
+             , create_date_time_f_adt
+             , create_user_id_f_adt
+             , del_date_time_f_adt
+             , del_user_id_f_adt
+             , update_date_time_f_adt
+             , update_user_id_f_adt
+        FROM t_api_auth_info
+        WHERE ads_pltfrm_seq = #{adsPlatformSequence} AND del_flg_f_adt = 'f'
+        ORDER BY api_auth_info_seq ASC
+    </select>
+
+    <select id="findByAdsPfLoginUserIdTest" resultMap="ApiAuthenticationInformationResultMap">
+        SELECT api_auth_info_seq
+             , ads_pltfrm_seq
+             , ads_pltfrm_login_user_id
+             , del_flg_f_adt
+             , create_date_time_f_adt
+             , create_user_id_f_adt
+             , del_date_time_f_adt
+             , del_user_id_f_adt
+             , update_date_time_f_adt
+             , update_user_id_f_adt
+        FROM t_api_auth_info
+        WHERE
+        ads_pltfrm_login_user_id = #{adsPfLoginUserId} AND
+        del_flg_f_adt = 'f'
+        ORDER BY api_auth_info_seq ASC
+    </select>
+</mapper>

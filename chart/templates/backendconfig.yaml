@@ -1,0 +1,9 @@
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: {{ include "api.backend.name" . }}
+spec:
+  securityPolicy:
+    name: "gke-api-security-policy"
+  sessionAffinity:
+    {{- include "api.session" . | nindent 4 }}

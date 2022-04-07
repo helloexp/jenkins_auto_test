@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "api.deployment.name" . }}
+  labels:
+    {{- include "api.commonLabels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "api.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "api.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name:  {{ include "api.name" . }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          readinessProbe:
+            {{- include "api.healthcheck" . | nindent 12 }}
+          ports:
+            - containerPort: {{ .Values.port.container }}
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "api.name" . }}
+                  key: spring.profiles.active
+            - name: ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "api.name" . }}
+                  key: env
+            - name: RDB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "api.name" . }}
+                  key: rdb.host
+            - name: RDB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "api.name" . }}
+                  key: rdb.port
+            - name: RDB_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "api.name" . }}
+                  key: rdb.database
+            - name: RDB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "api.name" . }}
+                  key: rdb_user
+            - name: RDB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "api.name" . }}
+                  key: rdb_password
+            - name: AZURE_AD_TENANT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "api.name" . }}
+                  key: azure.tenantid
+            - name: AZURE_AD_CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "api.name" . }}
+                  key: azure.clientid
+            - name: AZURE_AD_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "api.name" . }}
+                  key: azure_ad_client_secret
+            - name: MKDB_API_DOMAIN_TKY
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "api.name" . }}
+                  key: mdbapi.tky
+            - name: DATASET_GA_UQJP
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "api.name" . }}
+                  key: dataset.ga.uqjp
+            - name: DATASET_GA_GUJP
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "api.name" . }}
+                  key: dataset.ga.gujp
+            - name: DATASET_GA_UQJP_APP
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "api.name" . }}
+                  key: dataset.ga.uqjp.app

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fastretailing.marketingpf.domain.mappers.SegmentMapper">
+    <resultMap id="segmentResultMap" type="com.fastretailing.marketingpf.domain.entities.Segment">
+        <id column="sgmt_seq" property="segmentSequence" />
+        <result column="biz_type" property="businessType" />
+        <result column="brnd_id" property="brandId" />
+        <result column="cntry_id" property="countryId" />
+        <result column="dlvr_sched_mo" property="deliveryScheduledMonth" />
+        <result column="evt_trgt_perd_type" property="eventTargetPeriodType" />
+        <result column="evt_trgt_perd_start_date" property="eventTargetPeriodStartDate" />
+        <result column="evt_trgt_perd_end_date" property="eventTargetPeriodEndDate" />
+        <result column="evt_trgt_perd_rltv_num_val" property="eventTargetPeriodRelativeNumberValue" />
+        <result column="evt_trgt_perd_rltv_perd_unit" property="eventTargetPeriodRelativePeriodUnit" />
+        <result column="trgt_itm_ctgry" property="targetItemCategory" />
+        <result column="sgmt_name" property="segmentName" />
+        <result column="desc" property="description" />
+        <result column="sql_edit_flg" property="sqlEditFlag" />
+        <result column="editd_sql" property="editedSql" />
+        <result column="sts" property="status" />
+        <result column="evt_type_list" property="eventTypeList" />
+        <result column="add_cond_lgcl_oprtr_type" property="additionalConditionLogicalOperatorType" />
+        <result column="del_flg_f_adt" property="deletionFlagForAudit" />
+        <result column="create_date_time_f_adt" property="createDateTimeForAudit" />
+        <result column="create_user_id_f_adt" property="createUserIdForAudit" />
+        <result column="del_date_time_f_adt" property="deletionDateTimeForAudit" />
+        <result column="del_user_id_f_adt" property="deletionUserIdForAudit" />
+        <result column="update_date_time_f_adt" property="updateDateTimeForAudit" />
+        <result column="update_user_id_f_adt" property="updateUserIdForAudit" />
+    </resultMap>
+
+    <select id="findAll" resultMap="segmentResultMap">
+        SELECT *
+        FROM t_sgmt
+        WHERE del_flg_f_adt = 'f'
+        ORDER BY sgmt_seq ASC
+    </select>
+
+    <select id="search" resultMap="segmentResultMap">
+        SELECT *
+        FROM t_sgmt
+        <where>
+            <if test="segmentSequence != null">
+                sgmt_seq = #{segmentSequence}
+            </if>
+            <if test="businessType != null">
+                AND biz_type = #{businessType}
+            </if>
+            <if test="deliveryScheduledMonth != null">
+                AND dlvr_sched_mo = #{deliveryScheduledMonth}
+            </if>
+            <if test="brandId != null">
+                AND brnd_id = #{brandId}
+            </if>
+            <if test="countryId != null">
+                AND cntry_id = #{countryId}
+            </if>
+            <if test="status != null">
+                AND sts = #{status}
+            </if>
+            <if test="eventTypeList != null">
+                <foreach item="eventTypeId" collection="eventTypeList" open=" AND (" separator="OR" close=")">
+                    evt_type_list<![CDATA[::jsonb]]> @> #{eventTypeId, typeHandler=com.fastretailing.marketingpf.handlers.LongToStringParameterTypeHandler}<![CDATA[::jsonb]]>
+                </foreach>
+            </if>
+            <if test="eventTargetPeriodType != null">
+                AND evt_trgt_perd_type = #{eventTargetPeriodType}
+            </if>
+            <if test="eventTargetPeriodStartDate != null">
+                AND evt_trgt_perd_start_date = #{eventTargetPeriodStartDate}
+            </if>
+            <if test="eventTargetPeriodEndDate != null">
+                AND evt_trgt_perd_end_date = #{eventTargetPeriodEndDate}
+            </if>
+            <if test="eventTargetPeriodRelativeNumberValue != null">
+                AND evt_trgt_perd_rltv_num_val = #{eventTargetPeriodRelativeNumberValue}
+            </if>
+            <if test="eventTargetPeriodRelativePeriodUnit != null">
+                AND evt_trgt_perd_rltv_perd_unit = #{eventTargetPeriodRelativePeriodUnit}
+            </if>
+            <if test="segmentName != null">
+                AND sgmt_name LIKE #{segmentName}
+            </if>
+            AND del_flg_f_adt = 'f'
+        </where>
+
+        ORDER BY sgmt_seq ASC
+    </select>
+
+    <insert id="create" parameterType="com.fastretailing.marketingpf.domain.entities.Segment" useGeneratedKeys="true" keyProperty="segmentSequence">
+        INSERT INTO t_sgmt
+        (biz_type, brnd_id, cntry_id, dlvr_sched_mo, evt_trgt_perd_type, evt_trgt_perd_start_date, evt_trgt_perd_end_date, evt_trgt_perd_rltv_num_val, evt_trgt_perd_rltv_perd_unit, trgt_itm_ctgry, sgmt_name, "desc", sql_edit_flg,
+        editd_sql, sts, evt_type_list, add_cond_lgcl_oprtr_type, del_flg_f_adt, create_date_time_f_adt, create_user_id_f_adt, update_date_time_f_adt, update_user_id_f_adt)
+        VALUES (
+            #{businessType},
+            #{brandId},
+            #{countryId},
+            #{deliveryScheduledMonth},
+            #{eventTargetPeriodType},
+            #{eventTargetPeriodStartDate},
+            #{eventTargetPeriodEndDate},
+            #{eventTargetPeriodRelativeNumberValue},
+            #{eventTargetPeriodRelativePeriodUnit},
+            #{targetItemCategory},
+            #{segmentName},
+            #{description},
+            #{sqlEditFlag},
+            #{editedSql},
+            #{status},
+            #{eventTypeList}::json,
+            #{additionalConditionLogicalOperatorType},
+            'f',
+            #{createDateTimeForAudit},
+            #{createUserIdForAudit},
+            #{updateDateTimeForAudit},
+            #{updateUserIdForAudit}
+        )
+    </insert>
+
+    <insert id="createSqlSegment" parameterType="com.fastretailing.marketingpf.domain.entities.Segment" useGeneratedKeys="true" keyProperty="segmentSequence">
+        INSERT INTO t_sgmt
+        (biz_type, brnd_id, cntry_id, dlvr_sched_mo, sgmt_name, sql_edit_flg, editd_sql, sts, del_flg_f_adt, create_date_time_f_adt, create_user_id_f_adt, update_date_time_f_adt, update_user_id_f_adt)
+        VALUES (
+        #{businessType},
+        #{brandId},
+        #{countryId},
+        #{deliveryScheduledMonth},
+        #{segmentName},
+        #{sqlEditFlag},
+        #{editedSql},
+        #{status},
+        'f',
+        #{createDateTimeForAudit},
+        #{createUserIdForAudit},
+        #{updateDateTimeForAudit},
+        #{updateUserIdForAudit}
+        )
+    </insert>
+
+    <select id="findById" resultMap="segmentResultMap">
+        SELECT *
+        FROM t_sgmt
+        WHERE sgmt_seq = #{segmentSequence} AND del_flg_f_adt = 'f'
+    </select>
+
+    <update id="update" parameterType="com.fastretailing.marketingpf.domain.entities.Segment" useGeneratedKeys="true" keyProperty="segmentSequence">
+        UPDATE t_sgmt
+        SET
+            biz_type = #{businessType},
+            brnd_id = #{brandId},
+            cntry_id = #{countryId},
+            dlvr_sched_mo = #{deliveryScheduledMonth},
+            evt_trgt_perd_type = #{eventTargetPeriodType},
+            evt_trgt_perd_start_date = #{eventTargetPeriodStartDate},
+            evt_trgt_perd_end_date = #{eventTargetPeriodEndDate},
+            evt_trgt_perd_rltv_num_val = #{eventTargetPeriodRelativeNumberValue},
+            evt_trgt_perd_rltv_perd_unit = #{eventTargetPeriodRelativePeriodUnit},
+            trgt_itm_ctgry = #{targetItemCategory},
+            sgmt_name = #{segmentName},
+            "desc" = #{description},
+            sql_edit_flg = #{sqlEditFlag},
+            editd_sql = #{editedSql},
+            sts = #{status},
+            evt_type_list = #{eventTypeList}::json,
+            add_cond_lgcl_oprtr_type = #{additionalConditionLogicalOperatorType},
+            update_date_time_f_adt = #{updateDateTimeForAudit},
+            update_user_id_f_adt = #{updateUserIdForAudit}
+        WHERE
+            sgmt_seq = #{segmentSequence}
+    </update>
+
+    <update id="delete" parameterType="com.fastretailing.marketingpf.domain.entities.Segment" useGeneratedKeys="true" keyProperty="segmentSequence">
+        UPDATE t_sgmt
+        SET
+        del_flg_f_adt = 't',
+        del_date_time_f_adt = #{deletionDateTimeForAudit},
+        del_user_id_f_adt = #{deletionUserIdForAudit}
+        WHERE
+        sgmt_seq = #{segmentSequence}
+    </update>
+
+    <select id="findListBySegmentName" resultMap="segmentResultMap">
+        SELECT *
+        FROM t_sgmt
+        WHERE sgmt_name LIKE '%${segmentName}%' AND del_flg_f_adt = 'f'
+        ORDER BY sgmt_seq ASC
+    </select>
+</mapper>

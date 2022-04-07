@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fastretailing.marketingpf.domain.mappers.SegmentItemForSqlMasterMapper">
+    <resultMap id="segmentItemForSqlMasterResultMap" type="com.fastretailing.marketingpf.domain.entities.SegmentItemForSqlMaster">
+        <id column="sgmt_itm_f_sql_seq" property="segmentItemForSqlSequence"/>
+        <result column="sgmt_itm_f_scrn_seq" property="segmentItemForScreenSequence"/>
+        <result column="brnd_id" property="brandId"/>
+        <result column="cntry_id" property="countryId"/>
+        <result column="evt_type" property="eventType"/>
+        <result column="sgmt_itm_name" property="segmentItemName"/>
+        <result column="qry_f_sgmt" property="queryForSegment"/>
+        <result column="del_flg_f_adt" property="deletionFlagForAudit"/>
+        <result column="create_date_time_f_adt" property="createDateTimeForAudit"/>
+        <result column="create_user_id_f_adt" property="createUserIdForAudit"/>
+        <result column="del_date_time_f_adt" property="deletionDateTimeForAudit"/>
+        <result column="del_user_id_f_adt" property="deletionUserIdForAudit"/>
+        <result column="update_date_time_f_adt" property="updateDateTimeForAudit"/>
+        <result column="update_user_id_f_adt" property="updateUserIdForAudit"/>
+    </resultMap>
+
+    <select id="findById" resultMap="segmentItemForSqlMasterResultMap">
+        SELECT *
+        FROM m_sgmt_itm_f_sql
+        WHERE sgmt_itm_f_sql_seq = #{segmentItemForSqlSequence} AND del_flg_f_adt = 'f'
+    </select>
+
+    <select id="findBySegmentItemForScreenSequenceAndConditions" resultMap="segmentItemForSqlMasterResultMap">
+        SELECT *
+        FROM m_sgmt_itm_f_sql
+        WHERE sgmt_itm_f_scrn_seq = #{segmentItemForScreenSequence}
+        AND evt_type IN
+        <foreach item="eventType" collection="eventTypeList" open="(" separator="," close=")">
+            #{eventType}
+        </foreach>
+        AND brnd_id = #{brandId}
+        AND cntry_id = #{countryId}
+        AND del_flg_f_adt = 'f'
+    </select>
+
+    <select id="findByConditions" resultMap="segmentItemForSqlMasterResultMap">
+        SELECT *
+        FROM m_sgmt_itm_f_sql
+        WHERE sgmt_itm_f_scrn_seq = #{segmentItemForScreenSequence}
+        AND brnd_id = #{brandId}
+        AND cntry_id = #{countryId}
+        AND del_flg_f_adt = 'f'
+    </select>
+</mapper>
